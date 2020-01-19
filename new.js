@@ -44,10 +44,8 @@
 
 var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
     var speechrecognizer = new SpeechRecognition();
-
-
-
-
+var pageNo = 0
+var keywords = [['language', 'person', 'feeing'], ['user', 'computer', 'languages', 'level', 'computer'], ['language', 'codes', 'programming', '0', 'is a'], ['languages', 'actual language', '', 'computer understands', 'primitive computer'], ['languages', 'assembly'], ['obvious correspondence', 'abstraction', 'memory', 'clock', 'cycles'], ['language', 'very time', 'machine', 'consuming.    error', 'program'], ['programming', 'languages', 'to know', 'solution', 'programmer'], ['languages', 'words', 'generation'], [], ['level', 'multi', 'c++ is paradigm', 'purpose'], ['ide', 'eventprogramming driven language', 'environment', 'generation', 'microsoft'], ['methods', 'performance', 'messagestyle', 'concise', 'classes'], ['compiler', 'memory'], [], []];
 function initialize(){
     console.log('started');
     // var r = document.querySelector('.output');
@@ -56,27 +54,46 @@ function initialize(){
     
     speechrecognizer.continuous = true;
     speechrecognizer.interimResults = true;
+    speechrecognizer.lang = 'en-IN';
     speechrecognizer.start();
     var finaltranscript = '';
+    speechrecognizer.onsoundstart = function() { 
+        console.log('Some sound is being received'); 
+      }
+      speechrecognizer.onsoundend = function(event) { 
+        console.log('Sound has stopped being received');
+        speechrecognizer.start() 
+      }
+      speechrecognizer.onaudioend = function() {
+        console.log('Audio capturing ended');
+        speechrecognizer.start()
+      }
     speechrecognizer.onresult = function(event){
-        var interimResults = '';
+        var interimResults1 = '';
         for (i=event.resultIndex; i<event.results.length;i++){
             var transcript = event.results[i][0].transcript;
             // console.log("transcript",transcript);
             
             if(event.results[i].isFinal){
                 finaltranscript += transcript;
-                var printarr = transcript;
+                var printarr = transcript.toLowerCase();
                 console.log('inside if',printarr);
                 
             }else{
-                interimResults += transcript;   
+                interimResults1 += transcript;   
             }
         }
 
         if(printarr){
         var arr =  printarr.split(" ");
         console.log("arr",arr);
+        for(i=0;i<arr.length;i++){
+           if ($.inArray(arr[i],keywords[pageNo] != -1)){
+               console.log("k",keywords[pageNo])
+                console.log("Match found",arr[i],$.inArray(arr[i],keywords[pageNo]));
+                
+            }
+        }
         }
         // r.innerHTML = finaltranscript + interimResults 
     }
