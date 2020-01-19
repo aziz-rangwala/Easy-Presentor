@@ -61,6 +61,7 @@ var defaultConfigRTMP = {
 AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.DEBUG);
 
 // init Agora SDK
+$('.scroll').click(function(){
 client.init(
   agoraAppId,
   function() {
@@ -74,6 +75,7 @@ client.init(
     console.log("[ERROR] : AgoraRTC client init failed", err);
   }
 );
+})
 
 // client callbacks
 client.on("stream-published", function(evt) {
